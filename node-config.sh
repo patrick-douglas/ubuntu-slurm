@@ -2,6 +2,8 @@
 SOCKETS=`lscpu | grep "Socket(s):"  | cut -d : -f 2 | awk '{print $1}'`
 THREADSPERCORE=`lscpu | grep "Thread(s) per core:" | cut -d : -f 2 | awk '{print $1}'`
 CORESPERSOCKET=`lscpu | grep "Core(s) per socket:" | cut -d : -f 2 | awk '{print $1}'`
+REALMEM=`free -m | grep Mem | awk '{print $2}'`
+
 COUNT="0"
 echo "Add lines between --- to gres.conf:"
 echo "---"
@@ -15,4 +17,4 @@ for i in `lspci | grep -i nvidia | awk '{print $1}' | cut -d : -f 1`
 echo "---"
 echo ""
 echo "Add line to end of slurm.conf:"
-echo "NodeName="$HOSTNAME" Gres=gpu:$COUNT Sockets=$SOCKETS CoresPerSocket=$CORESPERSOCKET ThreadsPerCore=$THREADSPERCORE State=UNKNOWN"
+echo "NodeName="$HOSTNAME" Gres=gpu:$COUNT Sockets=$SOCKETS CoresPerSocket=$CORESPERSOCKET ThreadsPerCore=$THREADSPERCORE RealMemory=$REALMEM State=UNKNOWN"
